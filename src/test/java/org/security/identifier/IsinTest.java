@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IsinTest {
 
-    private static String AAPL = "US0378331005";
+    private static final String AAPL = "US0378331005";
 
     @Test
     public void isinShouldBeCreatedFromValidValue() {
