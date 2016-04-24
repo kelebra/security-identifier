@@ -1,14 +1,36 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 version = '0.1'
-group = "org.security.identifier"
+group = "com.github.kelebra"
+archivesBaseName = "security-identifier"
+
 
 sourceCompatibility = 1.6
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'Security Identifier', 'Implementation-Version': version
     }
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
 }
 
 repositories {
@@ -19,4 +41,49 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '2.3.0'
     testCompile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.0'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Security Identifier'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Domain model and utility methods for representation of securities identification on exchange'
+                url 'https://github.com/kelebra/security-identifier'
+
+                scm {
+                    connection 'scm:git:https://github.com/kelebra/security-identifier.git'
+                    developerConnection 'scm:git:https://github.com/kelebra/security-identifier.git'
+                    url 'https://github.com/kelebra/security-identifier.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'https://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'kelebra'
+                        name 'Oleksii Tkachuk'
+                        email 'kelebra20@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
