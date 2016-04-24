@@ -20,7 +20,7 @@ public class ModuloTenCheckDigitProvider implements CheckDigitProvider {
         for (int i = 0; i < min; i++) {
             int current = weights[i] * characterCode(body.charAt(i));
             if (moduloSum) {
-                sum += (current % 10 + current / 10) % 10;
+                sum += (current % 10 + current / 10);
             } else {
                 sum += current;
             }
