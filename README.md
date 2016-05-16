@@ -11,7 +11,7 @@ Currently supported security identifiers:
 <dependency>
   <groupId>com.github.kelebra</groupId>
   <artifactId>security-identifier</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
 </dependency>
 ```
 ## Classes representing security identifiers
@@ -47,3 +47,9 @@ SecurityIdentifierFactory.getType("037833100"); // returns SecurityIdentifierTyp
 |ISIN                 | +                      | +                | 12              | Luhn's algorithm                 |                                   |
 |CUSIP                | -                      | +                | 9               | Modulo 10 hashing algorithm      |                                   |
 |SEDOL                | -                      | +                | 7               | Modulo 10 hashing algorithm      |GB country code for ISIN conversion|
+## Create security identifier without check digit check:
+```java
+new IsinBuilder().withoutCheckOfCheckDigit().build("US0378331006"); // creates Isin instance
+new SedolBuilder().withoutCheckOfCheckDigit().build("0263497"); // creates Sedol instance
+new CusipBuilder().withoutCheckOfCheckDigit().build("037833101"); // creates Cusip instance
+```
