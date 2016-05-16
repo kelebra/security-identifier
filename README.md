@@ -1,4 +1,5 @@
 # security-identifier
+[![Build Status](https://travis-ci.org/kelebra/security-identifier.svg?branch=master)](https://travis-ci.org/kelebra/security-identifier)<br/>
 The main intention for creation of this library is to have standart domain model across financial institutions for representing security identifiers and their validations.
 
 Currently supported security identifiers:
