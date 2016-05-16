@@ -1,9 +1,9 @@
 package com.github.kelebra.security.identifier;
 
 import com.github.kelebra.security.identifier.exceptions.InvalidCheckDigitInSecurityIdentifier;
+import com.github.kelebra.security.identifier.util.Cusips;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import com.github.kelebra.security.identifier.util.Cusips;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class CusipTest {
 
     private static final String AAPL = "037833100";
+    private static final String AAPL_WITHBAD_CHECK_DIGIT = "037833101";
 
     @Test
     public void cusipShouldBeCreatedFromValidAppleCusip() {
@@ -29,6 +30,11 @@ public class CusipTest {
     @Test(expected = InvalidCheckDigitInSecurityIdentifier.class)
     public void cusipShouldNotBeCreatedFromMalformedAppleCusip() {
         Cusip.from(AAPL.substring(0, 5));
+    }
+
+    @Test
+    public void cusipShouldBeCreatedFromMalformedCheckDigit() {
+        assertThat(new CusipBuilder().withoutCheckOfCheckDigit().build(AAPL_WITHBAD_CHECK_DIGIT).toString()).isEqualTo(AAPL_WITHBAD_CHECK_DIGIT);
     }
 
     @Test

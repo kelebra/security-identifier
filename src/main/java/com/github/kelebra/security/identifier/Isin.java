@@ -1,35 +1,16 @@
 package com.github.kelebra.security.identifier;
 
 import com.github.kelebra.security.identifier.generic.SecurityIdentifier;
-import com.github.kelebra.security.identifier.check.LuhnCheckDigitProvider;
-import com.github.kelebra.security.identifier.exceptions.InvalidIsinValueProvided;
-import com.github.kelebra.security.identifier.util.InstanceProvider;
 
 public class Isin extends SecurityIdentifier {
 
-    private static int LENGTH = 12;
     protected static int BODY_LENGTH = 9;
-    private static final InstanceProvider<Isin> INSTANCE_PROVIDER = new InstanceProvider<Isin>() {
-        @Override
-        public Isin provide(String body, char checkDigit) {
-            return new Isin(body, checkDigit);
-        }
-    };
 
     public static Isin from(String value) {
-        return from(
-                true,
-                true,
-                value.substring(0, value.length() - 1),
-                value.charAt(value.length() - 1),
-                LENGTH,
-                LuhnCheckDigitProvider.INSTANCE,
-                InvalidIsinValueProvided.INSTANCE,
-                INSTANCE_PROVIDER
-        );
+        return new IsinBuilder().build(value);
     }
 
-    private Isin(String body, char checkDigit) {
+    Isin(String body, char checkDigit) {
         super(body, checkDigit);
     }
 
